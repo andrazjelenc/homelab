@@ -7,24 +7,24 @@ I am currently not using IPTV, so only untagged traffic is allowed betwen ISP an
 
 ## VLANs
 
-- Name: MGMT_VLAN_99
-  VLAN ID: 99
+- Name: MGMT_VLAN_99  
+  VLAN ID: 99  
   Subnet: 10.0.99.0/24
 
-- Name: WAN_VLAN_666
-  VLAN ID: 666
+- Name: WAN_VLAN_666  
+  VLAN ID: 666  
   Subnet: 192.168.1.0/24
 
-- Name: TRUSTED_VLAN_10
-  VLAN ID: 10
+- Name: TRUSTED_VLAN_10  
+  VLAN ID: 10  
   Subnet: 10.0.10.0/24
 
-- Name: GUEST_VLAN_20
-  VLAN ID: 20
+- Name: GUEST_VLAN_20  
+  VLAN ID: 20  
   Subnet: 10.0.20.0/24
 
-- Name: IPTV_VLAN_3999
-  VLAN ID: 3999
+- Name: IPTV_VLAN_3999  
+  VLAN ID: 3999  
   Subnet: ---
 
 ## Interfaces
