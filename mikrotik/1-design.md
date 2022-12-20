@@ -1,7 +1,7 @@
 # Design
 In this document there is a design of my home network. I currently have one Mikrotik router called Router and one Access Point called AP1. The AP1 acts only as an access point and it broadcasts two SSIDs one for home usage and one for guests.
 
-My ISP provider uses VLAN 3999 for multicasts for IPTV. All interfaces of the ISP router are hybrid interfaces. Untagged traffic is used for normal traffic and tagged 3999 traffic for IPTV. So interface ether1 of my Router is also a part of VLANs. On ingress we keep tagged traffic VLAN 3999 and tag untagged traffic with VLAN 666.
+My ISP provider uses VLAN 3999 for multicasts for IPTV. All interfaces of the ISP router are hybrid interfaces. Untagged traffic is used for normal traffic and tagged 3999 traffic for IPTV. So interface ether1 of my Router is also a part of VLANs. On ingress we keep tagged traffic VLAN 3999 and tag untagged traffic with VLAN 666. The TV BOX has to have access to the tagged traffic for IPTV and also to the untagged for network services.
 
 I am **currently not using IPTV**, so only untagged traffic is allowed betwen ISP and my router.
 
@@ -9,7 +9,7 @@ I am **currently not using IPTV**, so only untagged traffic is allowed betwen IS
 
 - Name: MGMT_VLAN_99  
   VLAN ID: 99  
-  Subnet: 10.0.99.0/24  
+  Subnet: 192.168.99.0/24  
   Description: Used for SSH, SNMP and other management traffic
 
 - Name: WAN_VLAN_666  
@@ -19,12 +19,12 @@ I am **currently not using IPTV**, so only untagged traffic is allowed betwen IS
 
 - Name: TRUSTED_VLAN_10  
   VLAN ID: 10  
-  Subnet: 10.0.10.0/24  
+  Subnet: 192.168.10.0/24  
   Description: Used for user devices like laptops, mobile phones
 
 - Name: GUEST_VLAN_20  
   VLAN ID: 20  
-  Subnet: 10.0.20.0/24  
+  Subnet: 192.168.20.0/24  
   Description: Used for untrusted devices and guest devices
 
 - Name: IPTV_VLAN_3999  
@@ -57,9 +57,9 @@ I am **currently not using IPTV**, so only untagged traffic is allowed betwen IS
 
 - Router:
     - WAN_VLAN_666: 192.168.1.2/24
-    - MGMT_VLAN_99: 10.0.99.1/24
-    - TRUSTED_VLAN_10: 10.0.10.1/24
-    - GUEST_VLAN_20: 10.0.20.1/24
+    - MGMT_VLAN_99: 192.168.99.1/24
+    - TRUSTED_VLAN_10: 192.168.10.1/24
+    - GUEST_VLAN_20: 192.168.20.1/24
 
 - AP1:
-    - MGMT_VLAN_99: 10.0.99.2/24
+    - MGMT_VLAN_99: 192.168.99.2/24
