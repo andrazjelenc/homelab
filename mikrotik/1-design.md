@@ -9,23 +9,28 @@ I am currently not using IPTV, so only untagged traffic is allowed betwen ISP an
 
 - Name: MGMT_VLAN_99  
   VLAN ID: 99  
-  Subnet: 10.0.99.0/24
+  Subnet: 10.0.99.0/24  
+  Description: Used for SSH, SNMP and other management traffic
 
 - Name: WAN_VLAN_666  
   VLAN ID: 666  
-  Subnet: 192.168.1.0/24
+  Subnet: 192.168.1.0/24  
+  Description: Used for untagged traffic that comes from ISP router
 
 - Name: TRUSTED_VLAN_10  
   VLAN ID: 10  
-  Subnet: 10.0.10.0/24
+  Subnet: 10.0.10.0/24  
+  Description: Used for user devices like laptops, mobile phones
 
 - Name: GUEST_VLAN_20  
   VLAN ID: 20  
-  Subnet: 10.0.20.0/24
+  Subnet: 10.0.20.0/24  
+  Description: Used for untrusted devices and guest devices
 
 - Name: IPTV_VLAN_3999  
   VLAN ID: 3999  
-  Subnet: ---
+  Subnet: ---  
+  Description: Used for IPTV multicast
 
 ## Interfaces
 
