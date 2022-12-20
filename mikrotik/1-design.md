@@ -3,7 +3,7 @@ In this document there is a design of my home network. I currently have one Mikr
 
 My ISP provider uses VLAN 3999 for multicasts for IPTV. All interfaces of the ISP router are hybrid interfaces. Untagged traffic is used for normal traffic and tagged 3999 traffic for IPTV. So interface ether1 of my Router is also a part of VLANs. On ingress we keep tagged traffic VLAN 3999 and tag untagged traffic with VLAN 666.
 
-I am currently not using IPTV, so only untagged traffic is allowed betwen ISP and my router.
+I am **currently not using IPTV**, so only untagged traffic is allowed betwen ISP and my router.
 
 ## VLANs
 
