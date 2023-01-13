@@ -27,30 +27,51 @@ I am **currently not using IPTV**, so only untagged traffic is allowed betwen IS
   Subnet: 192.168.20.0/24  
   Description: Used for untrusted devices and guest devices
 
+- Name: STORAGE_VLAN_30  
+  VLAN ID: 30  
+  Subnet: 192.168.30.0/24  
+  Description: Used for network storage
+
 - Name: IPTV_VLAN_3999  
   VLAN ID: 3999  
   Subnet: ---  
   Description: Used for IPTV multicast
 
+
 ## Interfaces
 
-- Router:
-    - sfp1: Disabled
-    - ether1: Access port to WAN_VLAN_666 (Uplink to ISP router)
-    - ether2: Disabled
-    - ether3: Disabled
-    - ether4: Disabled
-    - ether5: Disabled
-    - ether6: Access port to MGMT_VLAN_99
-    - ether7: Access port to TRUSTED_VLAN_10
-    - ether8: Access port to TRUSTED_VLAN_10
-    - ether9: Access port to GUEST_VLAN_20
-    - ether10: Trunk port to AP1 with VLANs 10, 20, 99 (pasive PoE)
+### Router
+| Interface | Status   | Type                            | Description                                    |
+| --------- | -------- | ------------------------------- | ---------------------------------------------- |
+| sfp1      | Disabled | -                               | -                                              |
+| ether1    | Enabled  | Access port to WAN_VLAN_666     | Uplink to ISP router                           |
+| ether2    | Disabled | -                               | -                                              |
+| ether3    | Disabled | -                               | -                                              |
+| ether4    | Enabled  | Link Agregation                 | LACP slave interface of interface bond_4-5     |
+| ether5    | Enabled  | Link Agregation                 | LACP slave interface of interface bond_4-5     |
+| ether6    | Enabled  | Access port to MGMT_VLAN_99     | Interface used for manual management           |
+| ether7    | Enabled  | Access port to MGMT_VLAN_99     | Link to RPI-01                                 |
+| ether8    | Enabled  | Access port to TRUSTED_VLAN_10  | Link to personal computer                      |
+| ether9    | Disabled | -                               | -                                              |
+| ether10   | Enabled  | Trunk port                      | Link to AP1 with VLANs 10, 20, 99 (pasive PoE) |
+| bond_4-5  | Enabled  | Access port to STORAGE_VLAN_30  | Link to NAS-01                                 |
+|           |          |                                 |                                                |
 
-- AP1:
-    - ether1: Trunk port to Router with VLANs 10, 20, 99
-    - wlan1: Access port to TRUSTED_VLAN_10 (SSID: JelencAP)
-    - wlan2: Access port to GUEST_VLAN_20 (SSID: JelencAP-Guest)
+### AP1
+| Interface | Status   | Type                            | Description                                    |
+| --------- | -------- | ------------------------------- | ---------------------------------------------- |
+| ether1    | Enabled  | Trunk port                      | Uplink to Router with VLANs 10, 20, 99         |
+| wlan1     | Enabled  | Access port to TRUSTED_VLAN_10  | SSID: JelencAP                                 |
+| wlan2     | Enabled  | Access port to GUEST_VLAN_20    | SSID: JelencAP-Guest                           |
+|           |          |                                 |                                                |
+
+### NAS-01
+| Interface | Status   | Type                            | Description                                    |
+| --------- | -------- | ------------------------------- | ---------------------------------------------- |
+| eth0      | Enabled  | Link Agregation                 | LACP slave interface of interface bond0        |
+| eth1      | Enabled  | Link Agregation                 | LACP slave interface of interface bond0        |
+| bond0     | Enabled  | Access port to STORAGE_VLAN_30  | Uplink to Router                               |
+|           |          |                                 |                                                |
 
 
 ## IP Addresses
@@ -60,6 +81,13 @@ I am **currently not using IPTV**, so only untagged traffic is allowed betwen IS
     - MGMT_VLAN_99: 192.168.99.1/24
     - TRUSTED_VLAN_10: 192.168.10.1/24
     - GUEST_VLAN_20: 192.168.20.1/24
+    - STORAGE_VLAN_30: 192.168.30.1/24
 
 - AP1:
     - MGMT_VLAN_99: 192.168.99.2/24
+
+- NAS-01:
+    - STORAGE_VLAN_30: 192.168.30.10/24
+
+- RPI-01:
+    - MGMT_VLAN_99: 192.168.99.101/24
