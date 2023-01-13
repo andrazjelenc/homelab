@@ -26,6 +26,13 @@ Just use serial console and remove existing config with following command.
 
 
 ##############################################
+# Bonding
+##############################################
+
+/interface bonding add mode=802.3ad name=bond_4-5 slaves=ether4,ether5
+
+
+##############################################
 # Bridge Ports
 ##############################################
 
@@ -58,6 +65,7 @@ add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filte
 add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=ether9 pvid=20
 add bridge=BR1 frame-types=admit-only-vlan-tagged ingress-filtering=yes interface=ether10
 add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=ether1 pvid=666
+add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=bond_4-5 pvid=30
 
 
 ##############################################
@@ -82,6 +90,7 @@ add bridge=BR1 tagged=BR1,ether10 vlan-ids=10
 add bridge=BR1 tagged=BR1,ether10 vlan-ids=20
 add bridge=BR1 tagged=BR1,ether10 vlan-ids=99
 add bridge=BR1 tagged=BR1 vlan-ids=666
+add bridge=BR1 tagged=BR1 vlan-ids=30
 
 
 ##############################################
@@ -89,15 +98,17 @@ add bridge=BR1 tagged=BR1 vlan-ids=666
 ##############################################
 
 /interface vlan
-add interface=BR1 name=GUEST_VLAN_20 vlan-id=20
 add interface=BR1 name=MGMT_VLAN_99 vlan-id=99
-add interface=BR1 name=TRUSTED_VLAN_10 vlan-id=10
 add interface=BR1 name=WAN_VLAN_666 vlan-id=666
+add interface=BR1 name=TRUSTED_VLAN_10 vlan-id=10
+add interface=BR1 name=GUEST_VLAN_20 vlan-id=20
+add interface=BR1 name=STORAGE_VLAN_30 vlan-id=30
 
 /ip address
 add address=192.168.99.1/24 interface=MGMT_VLAN_99 network=192.168.99.0
 add address=192.168.10.1/24 interface=TRUSTED_VLAN_10 network=192.168.10.0
 add address=192.168.20.1/24 interface=GUEST_VLAN_20 network=192.168.20.0
+add address=192.168.30.1/24 interface=STORAGE_VLAN_30 network=192.168.30.0
 add address=192.168.1.2/24 interface=WAN_VLAN_666 network=192.168.1.0
 
 # WAN
@@ -125,6 +136,11 @@ add address=192.168.1.2/24 interface=WAN_VLAN_666 network=192.168.1.0
 /ip pool add name=dhcp_pool2 ranges=192.168.20.100-192.168.20.254
 /ip dhcp-server add address-pool=dhcp_pool2 disabled=no interface=GUEST_VLAN_20 name=dhcp3
 /ip dhcp-server network add address=192.168.20.0/24 gateway=192.168.20.1
+
+# STORAGE_VLAN_30 DHCP Server
+/ip pool add name=dhcp_pool3 ranges=192.168.30.100-192.168.30.254
+/ip dhcp-server add address-pool=dhcp_pool3 disabled=no interface=STORAGE_VLAN_30 name=dhcp4
+/ip dhcp-server network add address=192.168.30.0/24 gateway=192.168.30.1
 
 
 ##############################################
@@ -164,9 +180,14 @@ add chain=forward connection-state=established,related action=fasttrack-connecti
 add chain=forward connection-state=established,related action=accept
 add chain=forward connection-state=invalid action=drop
 add chain=forward connection-state=new connection-nat-state=!dstnat in-interface-list=WAN action=drop
-add chain=forward connection-state=new in-interface=MGMT_VLAN_99 out-interface-list=WAN action=accept
+add action=drop chain=forward connection-state=new dst-address=192.168.1.0/24 in-interface=TRUSTED_VLAN_10 out-interface-list=WAN
+add action=drop chain=forward connection-state=new dst-address=192.168.1.0/24 in-interface=GUEST_VLAN_20 out-interface-list=WAN
+add action=drop chain=forward connection-state=new dst-address=192.168.1.0/24 in-interface=STORAGE_VLAN_30 out-interface-list=WAW
+add chain=forward connection-state=new in-interface=MGMT_VLAN_99 action=accept
 add chain=forward connection-state=new in-interface=TRUSTED_VLAN_10 out-interface-list=WAN action=accept
 add chain=forward connection-state=new in-interface=GUEST_VLAN_20 out-interface-list=WAN action=accept
+add chain=forward connection-state=new in-interface=STORAGE_VLAN_30 out-interface-list=WAN action=accept
+
 add chain=forward action=drop
 
 /ip firewall nat add chain=srcnat action=masquerade out-interface-list=WAN
@@ -183,8 +204,8 @@ add chain=forward action=drop
 /interface 
 set disabled=yes [find name=ether2]
 set disabled=yes [find name=ether3]
-set disabled=yes [find name=ether4]
-set disabled=yes [find name=ether5]
+set disabled=yes [find name=ether9]
+set disabled=yes [find name=sfp1]
 ```
 
 ## Day 3: Wrap it up
