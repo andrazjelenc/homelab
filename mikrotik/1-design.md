@@ -50,7 +50,7 @@ I am **currently not using IPTV**, so only untagged traffic is allowed betwen IS
 | ether4    | Enabled  | Link Agregation                 | LACP slave interface of interface bond_4-5     |
 | ether5    | Enabled  | Link Agregation                 | LACP slave interface of interface bond_4-5     |
 | ether6    | Enabled  | Access port to MGMT_VLAN_99     | Interface used for manual management           |
-| ether7    | Enabled  | Access port to MGMT_VLAN_99     | Link to RPI-01                                 |
+| ether7    | Disabled |                                 |                                                |
 | ether8    | Enabled  | Access port to TRUSTED_VLAN_10  | Link to personal computer                      |
 | ether9    | Disabled | -                               | -                                              |
 | ether10   | Enabled  | Trunk port                      | Link to AP1 with VLANs 10, 20, 99 (pasive PoE) |
@@ -88,6 +88,3 @@ I am **currently not using IPTV**, so only untagged traffic is allowed betwen IS
 
 - NAS-01:
     - STORAGE_VLAN_30: 192.168.30.10/24
-
-- RPI-01:
-    - MGMT_VLAN_99: 192.168.99.101/24
