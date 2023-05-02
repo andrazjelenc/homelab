@@ -26,13 +26,6 @@ Just use serial console and remove existing config with following command.
 
 
 ##############################################
-# Bonding
-##############################################
-
-/interface bonding add mode=802.3ad name=bond_4-5 slaves=ether4,ether5
-
-
-##############################################
 # Bridge Ports
 ##############################################
 
@@ -59,13 +52,12 @@ Just use serial console and remove existing config with following command.
 
 /interface bridge port
 
+add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=ether1 pvid=666
+add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=ether4 pvid=10
+add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=ether5 pvid=30
 add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=ether6 pvid=99
-add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=ether7 pvid=10
-add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=ether8 pvid=10
 add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=ether9 pvid=20
 add bridge=BR1 frame-types=admit-only-vlan-tagged ingress-filtering=yes interface=ether10
-add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=ether1 pvid=666
-add bridge=BR1 frame-types=admit-only-untagged-and-priority-tagged ingress-filtering=yes interface=bond_4-5 pvid=30
 
 
 ##############################################
@@ -202,10 +194,12 @@ add chain=forward action=drop
 
 # Disable interfaces that are not in use
 /interface 
-set disabled=yes [find name=ether2]
-set disabled=yes [find name=ether3]
-set disabled=yes [find name=ether9]
-set disabled=yes [find name=sfp1]
+set [ find default-name=ether2 ] disabled=yes
+set [ find default-name=ether3 ] disabled=yes
+set [ find default-name=ether7 ] disabled=yes
+set [ find default-name=ether8 ] disabled=yes
+set [ find default-name=ether9 ] disabled=yes
+set [ find default-name=sfp1 ] disabled=yes
 ```
 
 ## Day 3: Wrap it up
